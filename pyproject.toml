@@ -1,3 +1,7 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
 [project]
 name = "tradagent"
 version = "0.1.0"
@@ -14,3 +18,6 @@ dependencies = [
     "ruff>=0.14.10",
     "yfinance>=1.0",
 ]
+
+[tool.setuptools.packages.find]
+where = ["src"]

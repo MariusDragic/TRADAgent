@@ -31,6 +31,8 @@ def main() -> None:
     settings = get_settings()
 
     portfolio = PortfolioState(cash=float(args.cash), positions=positions)
+    print(f"\n🚀 Starting TRADAgent for {args.ticker}")
+    print(f"Portfolio: ${portfolio.cash:.2f} cash, positions: {portfolio.positions}\n")
 
     agent = TRADAgent(
         llm=MistralToolCaller(
@@ -43,4 +45,10 @@ def main() -> None:
     )
 
     result = agent.run(ticker=args.ticker, portfolio=portfolio)
+    print("\n" + "="*60)
+    print("DECISION RESULT")
+    print("="*60)
     sys.stdout.write(json.dumps(result, indent=2) + "\n")
+
+if __name__ == "__main__":
+    main()

@@ -32,50 +32,68 @@ class MistralToolCaller:
             {"role": "user", "content": json.dumps(user_payload)},
         ]
 
-        response = client.chat.complete(
-            model=self.model,
-            messages=messages,
-            tools=tools,
-            tool_choice="required",
-            temperature=0.1,
-        )
-
-        msg = response.choices[0].message
-        tool_calls = getattr(msg, "tool_calls", None)
-        if not tool_calls:
-            raise RuntimeError("Model did not produce a tool call.")
-
-        for call in tool_calls:
-            fn_name = call.function.name
-            fn_args = json.loads(call.function.arguments or "{}")
-            if fn_name not in tool_handlers:
-                raise RuntimeError(f"Missing tool handler for: {fn_name}")
-
-            tool_result = tool_handlers[fn_name](fn_args)
-            messages.append(
-                {
-                    "role": "tool",
-                    "name": fn_name,
-                    "content": tool_result,
-                    "tool_call_id": call.id,
-                }
+        print("Calling Mistral AI for tool execution...")
+        while True:
+            response = client.chat.complete(
+                model=self.model,
+                messages=messages,
+                tools=tools,
+                temperature=0.1,
             )
 
-        response2 = client.chat.complete(
+            msg = response.choices[0].message
+
+            # Case 1: model wants to call tools
+            if msg.tool_calls:
+                print(f"Model requested {len(msg.tool_calls)} tool call(s)")
+        
+                messages.append({"role": "assistant", "tool_calls": msg.tool_calls})
+                
+                for call in msg.tool_calls:
+                    fn_name = call.function.name
+                    fn_args = json.loads(call.function.arguments or "{}")
+
+                    if fn_name not in tool_handlers:
+                        raise RuntimeError(f"Unknown tool: {fn_name}")
+
+                    result = tool_handlers[fn_name](fn_args)
+
+                    messages.append(
+                        {
+                            "role": "tool",
+                            "tool_call_id": call.id,
+                            "name": fn_name,
+                            "content": result,
+                        }
+                    )
+                continue
+
+            # Case 2: model answered normally → break
+            print("Assistant response received")
+            messages.append(
+                {
+                    "role": "assistant",
+                    "content": msg.content or "",
+                }
+            )
+            break
+
+        response = client.chat.complete(
             model=self.model,
             messages=messages
             + [
                 {
                     "role": "user",
-                    "content": "Return a single JSON object that follows the provided schema.",
+                    "content": "Return ONLY a JSON object matching the schema.",
                 }
             ],
             response_format={"type": "json_schema", "json_schema": decision_schema},
             temperature=0.1,
         )
 
-        content = response2.choices[0].message.content
+        content = response.choices[0].message.content
         if not content:
-            raise RuntimeError("Empty decision content from model.")
+            raise RuntimeError("Empty decision response")
 
         return Decision.model_validate_json(content)
+

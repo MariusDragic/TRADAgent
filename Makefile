@@ -5,7 +5,7 @@ install:
 	uv pip install -e .
 
 run:
-	uv run tradagent --ticker AAPL --cash 10000 --positions '{"AAPL":0.10}'
+	uv run python -m tradagent.cli --ticker AAPL --cash 10000 --positions '{"AAPL":0.10}'
 
 format:
 	uv pip install black ruff
