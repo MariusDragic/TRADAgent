@@ -1,0 +1,16 @@
+[project]
+name = "tradagent"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "black>=25.12.0",
+    "mistralai>=1.10.0",
+    "numpy>=2.4.0",
+    "pandas>=2.3.3",
+    "pydantic>=2.12.5",
+    "pydantic-settings>=2.12.0",
+    "ruff>=0.14.10",
+    "yfinance>=1.0",
+]
