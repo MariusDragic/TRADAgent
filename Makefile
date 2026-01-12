@@ -15,3 +15,6 @@ format:
 lint:
 	uv pip install ruff
 	uv run ruff check src
+
+env:
+	source .venv/bin/activate
