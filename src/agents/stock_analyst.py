@@ -2,8 +2,8 @@ from langchain.agents import create_agent
 from langchain_mistralai import ChatMistralAI
 from langchain.messages import SystemMessage, HumanMessage
 
-from finance_agent.config import MISTRAL_API_KEY
-from .tools.stock_analyst_tools import TOOLS
+from ..config import MISTRAL_API_KEY
+from ..tools.stock_analyst_tools import TOOLS
 
 SYSTEM_PROMPT = (
     "You are a senior financial analyst and capital markets expert. "

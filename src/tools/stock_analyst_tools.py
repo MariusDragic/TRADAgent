@@ -6,7 +6,7 @@ from langchain.tools import tool
 from langchain_community.tools.wikipedia.tool import WikipediaQueryRun
 from langchain_community.utilities.wikipedia import WikipediaAPIWrapper
 
-from finance_agent.utils.stock_utils import *
+from ..utils.stock_utils import *
 
 
 wikipedia_tool = WikipediaQueryRun(
