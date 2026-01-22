@@ -1,11 +1,55 @@
-# Python-generated files
+# Python
 __pycache__/
-*.py[oc]
+*.py[cod]
+*$py.class
+*.so
+.Python
 build/
+develop-eggs/
 dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
 wheels/
-*.egg-info
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
 
-# Virtual environments
-.venv
+# Virtual Environment
+.venv/
+venv/
+ENV/
+env/
+
+# Environment Variables
 .env
+.env.local
+
+# IDEs
+.vscode/
+.idea/
+
+# Latex artifacts (in case they are not cleaned)
+*.aux
+*.log
+*.out
+*.toc
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+
+# Project Specific
+# We ignore generated reports in git, but keep the folder structure
+reports/*.pdf
+reports/*.tex
+!reports/.gitkeep
+
+# Antigrav tests (optional depending on if user wants to version them)
+# Keeping CONSIGNES.md but potentially ignoring temp tests
+# antigrav/tests/__pycache__/

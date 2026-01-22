@@ -22,10 +22,16 @@ wikipedia_tool = WikipediaQueryRun(
 @tool
 def get_stock_report(ticker: str) -> dict:
     """
-    Returns a comprehensive stock-level quantitative report.
+    Returns a comprehensive stock-level quantitative report with all micro and macro metrics.
     """
+    stock = yf.Ticker(ticker)
+    info = stock.info
+    
     return {
+        "ticker": ticker.upper(),
+        "company_name": info.get("longName", ticker),
         "price": get_latest_ohlc(ticker),
+        "market_cap": info.get("marketCap", "N/A"),
         "volatility": compute_volatility(ticker),
         "momentum": {
             "rsi_14d": compute_rsi(ticker),
