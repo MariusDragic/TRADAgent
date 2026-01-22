@@ -50,6 +50,8 @@ reports/*.pdf
 reports/*.tex
 !reports/.gitkeep
 
+antigrav/
+
 # Antigrav tests (optional depending on if user wants to version them)
 # Keeping CONSIGNES.md but potentially ignoring temp tests
 # antigrav/tests/__pycache__/
